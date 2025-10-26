@@ -1,0 +1,22 @@
+# Build artifacts
+build/
+*.app
+
+# Xcode
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+DerivedData/
+
+# Swift
+*.swiftmodule
+*.swiftdoc
+*.swiftsourceinfo
+
+# macOS
+.DS_Store
+*.dSYM
+
+# Editor
+.vscode/
+.idea/
