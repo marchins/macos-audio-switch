@@ -1,6 +1,6 @@
 # macOS Audio Switcher
 
-A lightweight macOS menu bar app for quickly switching between audio input and output devices. Perfect for switching between internal speakers and external audio interfaces like the Scarlett Solo.
+A lightweight macOS menu bar app for quickly switching between audio input and output devices. Perfect for switching between internal speakers and external audio interfaces, without opening MacOS Settings.
 
 ## Features
 
@@ -39,20 +39,15 @@ The app appears as a speaker icon in your menu bar. Click it to see all availabl
 
 ### Option 1: Build from Source
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/macos-audio-switch.git
-   cd macos-audio-switch
-   ```
 
-2. Build the app:
+1. Build the app:
    ```bash
    make build
    # or
    ./build.sh
    ```
 
-3. Run the app:
+2. Run the app:
    ```bash
    make run
    # or
@@ -65,13 +60,6 @@ The app appears as a speaker icon in your menu bar. Click it to see all availabl
    # or
    sudo cp -r build/AudioSwitcher.app /Applications/
    ```
-
-### Option 2: Quick Build Script
-
-```bash
-./build.sh
-open build/AudioSwitcher.app
-```
 
 ## Usage
 
