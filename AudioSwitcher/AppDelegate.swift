@@ -1,4 +1,5 @@
 import Cocoa
+import CoreAudio
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
