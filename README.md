@@ -5,9 +5,12 @@ A lightweight macOS menu bar app for quickly switching between audio input and o
 ## Features
 
 - **Fast Audio Switching**: Instantly switch between audio devices with a single click
+- **Global Keyboard Shortcuts**: Switch devices without touching the menu bar
+- **Quick Toggle**: Instantly toggle between your last two used devices
 - **Menu Bar Integration**: Lives in your menu bar for quick access
 - **Separate Input/Output Control**: Independently manage input and output devices
 - **Real-time Updates**: Automatically detects when audio devices are connected/disconnected
+- **Visual Notifications**: Get feedback when switching via keyboard shortcuts
 - **Minimal Resource Usage**: Native Swift app with no background overhead
 - **No Permissions Required**: Uses standard CoreAudio APIs
 
@@ -20,12 +23,16 @@ The app appears as a speaker icon in your menu bar. Click it to see all availabl
 ├── Audio Devices
 ├──────────────────
 ├── Output Devices:
-│   ✓ MacBook Pro Speakers
-│     Scarlett Solo USB
+│   ✓ MacBook Pro Speakers  ⌘⌥1
+│     Scarlett Solo USB  ⌘⌥2
+│     HDMI Output  ⌘⌥3
 ├──────────────────
 ├── Input Devices:
-│   ✓ MacBook Pro Microphone
-│     Scarlett Solo USB
+│     MacBook Pro Microphone
+│   ✓ Scarlett Solo USB
+├──────────────────
+├── Keyboard Shortcuts:
+│     ⌘⇧A - Toggle Last Two
 ├──────────────────
 └── Quit
 ```
@@ -86,6 +93,32 @@ open build/AudioSwitcher.app
 - Audio devices are automatically detected when plugged/unplugged
 - To start the app at login, add it to System Settings → Login Items
 
+## Keyboard Shortcuts
+
+AudioSwitcher includes powerful global keyboard shortcuts that work system-wide:
+
+### Quick Toggle
+- **⌘⇧A** (Cmd+Shift+A) - Toggle between your last two used output devices
+  - Perfect for quickly switching between speakers and headphones
+  - Example: Scarlett Solo → Internal Speakers → Scarlett Solo
+
+### Numbered Device Shortcuts
+- **⌘⌥1** (Cmd+Option+1) - Switch to output device #1
+- **⌘⌥2** (Cmd+Option+2) - Switch to output device #2
+- **⌘⌥3** (Cmd+Option+3) - Switch to output device #3
+- **⌘⌥4** (Cmd+Option+4) - Switch to output device #4
+- **⌘⌥5** (Cmd+Option+5) - Switch to output device #5
+
+Device numbers correspond to the order shown in the menu (top to bottom). The keyboard shortcuts are displayed next to each device name in the menu bar dropdown.
+
+### Visual Feedback
+
+When switching via keyboard shortcuts, you'll see a macOS notification showing:
+- The type of switch (Output/Input)
+- The device name you switched to
+
+This confirms the switch was successful without needing to check the menu.
+
 ## How It Works
 
 AudioSwitcher uses Apple's CoreAudio framework to:
@@ -110,12 +143,13 @@ AudioSwitcher uses Apple's CoreAudio framework to:
 ```
 macos-audio-switch/
 ├── AudioSwitcher/
-│   ├── main.swift                 # App entry point
-│   ├── AppDelegate.swift          # Menu bar UI and event handling
-│   ├── AudioDeviceManager.swift   # CoreAudio integration
-│   └── Info.plist                 # App configuration
-├── Makefile                       # Build automation
-├── build.sh                       # Build script
+│   ├── main.swift                      # App entry point
+│   ├── AppDelegate.swift               # Menu bar UI and event handling
+│   ├── AudioDeviceManager.swift        # CoreAudio integration
+│   ├── KeyboardShortcutManager.swift   # Global hotkey management
+│   └── Info.plist                      # App configuration
+├── Makefile                            # Build automation
+├── build.sh                            # Build script
 └── README.md
 ```
 
@@ -138,20 +172,22 @@ make install  # Install to /Applications
 
 Key files to modify:
 
-- **AppDelegate.swift**: Change UI, add keyboard shortcuts, add features
+- **AppDelegate.swift**: Change UI, modify menu structure, add features
 - **AudioDeviceManager.swift**: Modify CoreAudio behavior, add device filtering
+- **KeyboardShortcutManager.swift**: Customize keyboard shortcuts, add new hotkeys
 - **Info.plist**: Change app bundle ID, version, or system requirements
 
 ### Adding Features
 
-Some ideas for enhancements:
+Some ideas for future enhancements:
 
-1. **Keyboard Shortcuts**: Add global hotkeys for device switching
-2. **Favorite Devices**: Pin frequently used devices to the top
+1. **Customizable Keyboard Shortcuts**: Allow users to configure their own hotkeys
+2. **Favorite Devices**: Pin frequently used devices to the top of the menu
 3. **Auto-switching**: Automatically switch when specific devices connect
-4. **Device Profiles**: Save and restore complete audio setups
-5. **Volume Control**: Add per-device volume management
-6. **Notifications**: Show alerts when devices are switched
+4. **Device Profiles**: Save and restore complete audio setups with one click
+5. **Volume Control**: Add per-device volume management directly in the menu
+6. **Sample Rate Control**: Switch sample rates for professional audio work
+7. **Input/Output Pairing**: Remember and restore input/output pairs
 
 ## Troubleshooting
 
