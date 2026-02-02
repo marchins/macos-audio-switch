@@ -1,6 +1,8 @@
 # Build artifacts
 build/
 *.app
+*.dmg
+dmg/
 
 # Xcode
 *.xcodeproj
