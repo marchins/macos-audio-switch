@@ -7,6 +7,7 @@ A lightweight macOS menu bar app for quickly switching between audio input and o
 - **Fast Audio Switching**: Instantly switch between audio devices with a single click
 - **Global Keyboard Shortcuts**: Switch devices without touching the menu bar
 - **Quick Toggle**: Instantly toggle between your last two used devices
+- **Launch at Login**: Optional auto-start when you log in to macOS
 - **Menu Bar Integration**: Lives in your menu bar for quick access
 - **Separate Input/Output Control**: Independently manage input and output devices
 - **Real-time Updates**: Automatically detects when audio devices are connected/disconnected
@@ -33,6 +34,8 @@ The app appears as a speaker icon in your menu bar. Click it to see all availabl
 ├──────────────────
 ├── Keyboard Shortcuts:
 │     ⌘⇧A - Toggle Last Two
+├──────────────────
+│ ✓ Launch at Login
 ├──────────────────
 └── Quit
 ```
@@ -91,7 +94,8 @@ open build/AudioSwitcher.app
 
 - The app runs in the background and uses minimal resources
 - Audio devices are automatically detected when plugged/unplugged
-- To start the app at login, add it to System Settings → Login Items
+- Enable "Launch at Login" from the menu to start the app automatically when you log in
+- The checkmark (✓) shows which device is currently active
 
 ## Keyboard Shortcuts
 
@@ -118,6 +122,21 @@ When switching via keyboard shortcuts, you'll see a macOS notification showing:
 - The device name you switched to
 
 This confirms the switch was successful without needing to check the menu.
+
+## Launch at Login
+
+AudioSwitcher can automatically start when you log in to macOS:
+
+1. **Enable**: Click "Launch at Login" in the menu (a checkmark will appear)
+2. **Disable**: Click "Launch at Login" again to disable
+3. **Status**: The checkmark shows whether auto-start is enabled
+
+When enabled, the app will:
+- Start automatically when you log in
+- Appear in your menu bar ready to use
+- Not show any windows or dialogs (silent start)
+
+This is perfect for daily use - set it once and never think about it again. Your audio switching shortcuts will always be available.
 
 ## How It Works
 
@@ -147,6 +166,7 @@ macos-audio-switch/
 │   ├── AppDelegate.swift               # Menu bar UI and event handling
 │   ├── AudioDeviceManager.swift        # CoreAudio integration
 │   ├── KeyboardShortcutManager.swift   # Global hotkey management
+│   ├── LaunchAtLoginManager.swift      # Login item management
 │   └── Info.plist                      # App configuration
 ├── Makefile                            # Build automation
 ├── build.sh                            # Build script
@@ -175,6 +195,7 @@ Key files to modify:
 - **AppDelegate.swift**: Change UI, modify menu structure, add features
 - **AudioDeviceManager.swift**: Modify CoreAudio behavior, add device filtering
 - **KeyboardShortcutManager.swift**: Customize keyboard shortcuts, add new hotkeys
+- **LaunchAtLoginManager.swift**: Modify login item behavior, update registration logic
 - **Info.plist**: Change app bundle ID, version, or system requirements
 
 ### Adding Features

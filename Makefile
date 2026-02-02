@@ -6,7 +6,8 @@ BUILD_DIR = build
 SOURCES = AudioSwitcher/main.swift \
           AudioSwitcher/AppDelegate.swift \
           AudioSwitcher/AudioDeviceManager.swift \
-          AudioSwitcher/KeyboardShortcutManager.swift
+          AudioSwitcher/KeyboardShortcutManager.swift \
+          AudioSwitcher/LaunchAtLoginManager.swift
 
 .PHONY: all build run clean install
 
@@ -21,6 +22,7 @@ build:
 		-framework Cocoa \
 		-framework CoreAudio \
 		-framework Carbon \
+		-framework ServiceManagement \
 		-Xlinker -rpath -Xlinker @executable_path/../Frameworks
 	@cp AudioSwitcher/Info.plist $(BUILD_DIR)/$(BUNDLE_NAME)/Contents/
 	@echo "Build complete! App bundle created at: $(BUILD_DIR)/$(BUNDLE_NAME)"

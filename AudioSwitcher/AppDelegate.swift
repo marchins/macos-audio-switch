@@ -113,6 +113,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu?.addItem(NSMenuItem.separator())
 
+        // Launch at Login option
+        let launchAtLoginItem = NSMenuItem(
+            title: "Launch at Login",
+            action: #selector(toggleLaunchAtLogin),
+            keyEquivalent: ""
+        )
+        launchAtLoginItem.target = self
+        launchAtLoginItem.state = LaunchAtLoginManager.shared.isEnabled ? .on : .off
+        menu?.addItem(launchAtLoginItem)
+
+        menu?.addItem(NSMenuItem.separator())
+
         // Quit option
         menu?.addItem(NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q"))
     }
@@ -179,6 +191,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         currentOutputDevice = audioManager.getDefaultOutputDevice()
         currentInputDevice = audioManager.getDefaultInputDevice()
         buildMenu()
+    }
+
+    @objc func toggleLaunchAtLogin() {
+        LaunchAtLoginManager.shared.toggle()
+        LaunchAtLoginManager.shared.showStatusNotification()
+        buildMenu() // Rebuild menu to update checkmark
     }
 
     @objc func quit() {

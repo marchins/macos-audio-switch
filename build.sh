@@ -22,10 +22,12 @@ swiftc \
     AudioSwitcher/AppDelegate.swift \
     AudioSwitcher/AudioDeviceManager.swift \
     AudioSwitcher/KeyboardShortcutManager.swift \
+    AudioSwitcher/LaunchAtLoginManager.swift \
     -o "${BUILD_DIR}/${BUNDLE_NAME}/Contents/MacOS/${APP_NAME}" \
     -framework Cocoa \
     -framework CoreAudio \
     -framework Carbon \
+    -framework ServiceManagement \
     -Xlinker -rpath -Xlinker @executable_path/../Frameworks
 
 # Copy Info.plist
