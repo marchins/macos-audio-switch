@@ -25,8 +25,15 @@ fi
 
 # Step 2: Clean up any existing DMG artifacts
 echo "🧹 Cleaning up old DMG artifacts..."
+# Unmount any existing volume from previous runs
+if [ -d "/Volumes/${VOLUME_NAME}" ]; then
+    echo "   Found stale mount, unmounting..."
+    hdiutil detach "/Volumes/${VOLUME_NAME}" -force 2>/dev/null || diskutil unmount force "/Volumes/${VOLUME_NAME}" 2>/dev/null || true
+    sleep 2
+fi
 rm -rf "${DMG_DIR}"
 rm -f "${DMG_NAME}"
+rm -f "${DMG_NAME}.temp.dmg"
 
 # Step 3: Create DMG staging directory
 echo "📁 Creating DMG staging directory..."
@@ -85,8 +92,9 @@ hdiutil create -volname "${VOLUME_NAME}" \
 
 # Mount the temporary DMG
 echo "📂 Mounting temporary DMG..."
-MOUNT_DIR=$(hdiutil attach -readwrite -noverify -noautoopen "${DMG_NAME}.temp.dmg" | \
-    egrep '^/dev/' | sed 1q | awk '{print $3}')
+DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "${DMG_NAME}.temp.dmg" | \
+    egrep '^/dev/' | sed 1q | awk '{print $1}')
+MOUNT_DIR="/Volumes/${VOLUME_NAME}"
 
 # Wait for mount
 sleep 2
@@ -118,8 +126,19 @@ fi
 
 # Unmount the temporary DMG
 echo "💾 Finalizing DMG..."
-hdiutil detach "${MOUNT_DIR}" -quiet || true
-sleep 2
+# Close any Finder windows for this volume
+osascript -e "tell application \"Finder\" to close every window" 2>/dev/null || true
+sleep 1
+# Force detach the device (more reliable than using mount path)
+hdiutil detach "${DEVICE}" -force 2>/dev/null || hdiutil detach "${MOUNT_DIR}" -force 2>/dev/null || true
+# Wait for the detach to complete
+sleep 3
+# Verify unmounted
+if [ -d "${MOUNT_DIR}" ]; then
+    echo "⚠️  Volume still mounted, forcing unmount..."
+    diskutil unmount force "${MOUNT_DIR}" 2>/dev/null || true
+    sleep 2
+fi
 
 # Convert to compressed read-only DMG
 hdiutil convert "${DMG_NAME}.temp.dmg" \

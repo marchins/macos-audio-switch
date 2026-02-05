@@ -14,9 +14,11 @@ class LaunchAtLoginManager {
 
     /// Check if the app is set to launch at login
     var isEnabled: Bool {
-        // For macOS 13+ we could use SMAppService, but for broader compatibility
-        // we'll check the login items directly
-        return isInLoginItems()
+        if #available(macOS 13.0, *) {
+            return SMAppService.mainApp.status == .enabled
+        } else {
+            return isInLoginItems()
+        }
     }
 
     // MARK: - Enable/Disable
@@ -154,13 +156,16 @@ class LaunchAtLoginManager {
         return false
     }
 
-    // MARK: - User Notification
+    // MARK: - User Feedback
 
-    func showStatusNotification() {
-        let notification = NSUserNotification()
-        notification.title = "Launch at Login"
-        notification.informativeText = isEnabled ? "Enabled" : "Disabled"
-        notification.soundName = nil
-        NSUserNotificationCenter.default.deliver(notification)
+    func showStatusAlert() {
+        let alert = NSAlert()
+        alert.messageText = "Launch at Login"
+        alert.informativeText = isEnabled
+            ? "AudioSwitcher will now start automatically when you log in."
+            : "AudioSwitcher will no longer start automatically."
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
 }

@@ -195,8 +195,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func toggleLaunchAtLogin() {
         LaunchAtLoginManager.shared.toggle()
-        LaunchAtLoginManager.shared.showStatusNotification()
         buildMenu() // Rebuild menu to update checkmark
+        LaunchAtLoginManager.shared.showStatusAlert()
     }
 
     @objc func quit() {
